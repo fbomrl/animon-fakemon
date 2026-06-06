@@ -2,41 +2,35 @@ name: Sync Animon Data
 
 on:
   schedule:
-    # Roda todo dia às 03:00 UTC (00:00 BRT)
-    - cron: '0 3 * * *'
-  workflow_dispatch:  # Permite rodar manualmente
+    - cron: '0 3 * * *'   # Todo dia às 03:00 UTC
+  workflow_dispatch:        # Permite rodar manualmente
 
 jobs:
   sync:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
+      - name: Checkout repo
         uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
       - name: Install dependencies
         run: |
-          pip install openpyxl requests beautifulsoup4 lxml
+          pip install openpyxl
 
       - name: Run sync script
         run: |
-          cd /home/runner/work/animon-fakemon/animon-fakemon
-          python scripts/sync_deviantart.py
+          cd scripts
+          python3 sync_deviantart.py
 
       - name: Commit and push if changed
         run: |
-          git config user.name "Pokédex Bot"
-          git config user.email "noreply@github.com"
-
-          # Verificar se teve mudanças
-          if git diff --quiet data/animons.json; then
-            echo "Sem mudanças nos dados"
-          else
-            git add data/animons.json data/metadata.json
-            git commit -m "chore: sync animon data from DeviantArt [skip ci]"
-            git push
-          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/animons.json data/metadata.json
+          git diff --cached --quiet || git commit -m "chore: sync animon data $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          git push
