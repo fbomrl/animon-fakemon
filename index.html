@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Animon Fakemon</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.0.0/css/flag-icons.min.css">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -22,14 +23,10 @@
 .t-Microbial{background:#164d15}
 body{background:var(--bg);color:var(--text);font-family:"Segoe UI",system-ui,sans-serif}
 nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 28px;
-  height:56px;display:flex;align-items:center;gap:0;position:sticky;top:0;z-index:200}
+  height:56px;display:flex;align-items:center;position:sticky;top:0;z-index:200}
 .logo{font-size:17px;font-weight:800;margin-right:28px;
   background:linear-gradient(135deg,#a67de8,#7c5cbf);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;white-space:nowrap}
-.nav-tabs{display:flex;gap:3px}
-.ntab{padding:5px 14px;border-radius:7px;font-size:13px;font-weight:500;
-  color:var(--muted);cursor:pointer;border:none;background:none;transition:all .2s}
-.ntab.active,.ntab:hover{background:rgba(124,92,191,.15);color:var(--accent2)}
 .nav-r{margin-left:auto;display:flex;gap:8px;align-items:center}
 .srch{background:var(--card);border:1px solid var(--border);color:var(--text);
   padding:6px 12px;border-radius:7px;font-size:13px;width:190px;outline:none}
@@ -42,8 +39,11 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 28
   padding:0 28px;display:flex;gap:0;overflow-x:auto;scrollbar-width:none}
 .rnav::-webkit-scrollbar{display:none}
 .rbtn{padding:10px 15px;font-size:13px;color:var(--muted);cursor:pointer;
-  border:none;background:none;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s}
+  border:none;background:none;border-bottom:2px solid transparent;white-space:nowrap;
+  transition:all .2s;display:flex;align-items:center;gap:6px}
 .rbtn.active,.rbtn:hover{color:var(--text);border-bottom-color:var(--accent2)}
+.rflag{width:20px;height:14px;border-radius:2px;object-fit:cover;display:inline-block}
+.rflag-custom{font-size:16px;line-height:1}
 .fbar{padding:10px 28px;display:flex;gap:6px;flex-wrap:wrap;
   align-items:center;border-bottom:1px solid var(--border)}
 .flbl{font-size:12px;color:var(--muted);margin-right:2px}
@@ -56,7 +56,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 28
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));
   gap:12px;padding:14px 28px 28px}
 .card{background:var(--card);border:1px solid var(--border);border-radius:13px;
-  padding:14px 12px 12px;cursor:pointer;transition:all .2s}
+  padding:14px 12px 12px;cursor:pointer;transition:all .2s;contain:layout style}
 .card:hover{background:var(--hover);border-color:var(--accent);transform:translateY(-2px)}
 .cnum{font-size:11px;color:var(--muted);font-weight:600;margin-bottom:3px}
 .cimg{width:100%;aspect-ratio:1;border-radius:8px;
@@ -70,6 +70,16 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 28
   color:#fff;text-transform:uppercase;letter-spacing:.3px}
 .loading{display:flex;align-items:center;justify-content:center;
   height:200px;font-size:15px;color:var(--muted)}
+/* PAGINAÇÃO */
+.pagination{display:flex;justify-content:center;align-items:center;
+  gap:8px;padding:16px 28px 32px}
+.pgbtn{padding:6px 14px;border-radius:7px;font-size:13px;font-weight:500;
+  cursor:pointer;border:1px solid var(--border);background:var(--card);
+  color:var(--text);transition:all .2s}
+.pgbtn:hover{border-color:var(--accent);color:var(--accent2)}
+.pgbtn.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.pgbtn:disabled{opacity:.35;cursor:not-allowed}
+.pginfo{font-size:13px;color:var(--muted)}
 /* MODAL */
 .ov{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:500;
   display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(5px)}
@@ -124,10 +134,6 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 28
 <body>
 <nav>
   <div class="logo">✦ Metanikk Regions</div>
-  <div class="nav-tabs">
-    <button class="ntab active" onclick="setDex('all',this)">MetanikRegions</button>
-    <button class="ntab" onclick="setDex('unknown',this)">Unknown Dex</button>
-  </div>
   <div class="nav-r">
     <input class="srch" placeholder="Buscar animon..." oninput="doSearch(this.value)">
     <div class="lang">
@@ -138,8 +144,9 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 28
 </nav>
 <div class="rnav" id="rnav"></div>
 <div class="fbar" id="fbar"></div>
-<div class="dhead"><div class="dtitle" id="dtitle">MetanikRegions Dex</div><div class="dcnt" id="dcnt"></div></div>
+<div class="dhead"><div class="dtitle" id="dtitle">Metanikk Regions</div><div class="dcnt" id="dcnt"></div></div>
 <div class="grid" id="grid"><div class="loading">Carregando animon...</div></div>
+<div class="pagination" id="pagination"></div>
 
 <div class="ov" id="ov" onclick="closeOv(event)">
 <div class="modal">
@@ -165,6 +172,8 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 28
 
 <script>
 let DATA = [];
+const PAGE_SIZE = 60;
+let currentPage = 1;
 
 const TN_PT={Neutral:"Neutro",Fire:"Fogo",Combat:"Combate",Water:"Água",Flying:"Voador",
   Botanical:"Botânico",Venom:"Veneno",Electric:"Elétrico",Chthonic:"Terra",
@@ -178,27 +187,47 @@ const TN_EN={Neutral:"Neutral",Fire:"Fire",Combat:"Combat",Water:"Water",Flying:
   Dragon:"Dragon",Spectral:"Ghost",Shadow:"Dark",Metal:"Steel",Mythic:"Fairy",
   Cosmic:"Cosmic",Sound:"Sound",Tribal:"Tribal",Fungal:"Fungal",Machine:"Machine",Microbial:"Microbial"};
 
-const REGIONS_PT=["Todas","Brasca","Dunnottar","Lekker","Rebueno","Unknown","Zodiac","Solar","Turtle","Paleta"];
-const REGIONS_EN=["All","Brasca","Dunnottar","Lekker","Rebueno","Unknown","Zodiac","Solar","Turtle","Paleta"];
-const REGION_EMO={Brasca:"🇧🇷",Dunnottar:"🏴",Lekker:"🌍",Rebueno:"🇦🇷",Unknown:"❓",Zodiac:"♈",Solar:"🪐",Turtle:"🐢",Paleta:"🇲🇽"};
+// flag-icons códigos (fi fi-XX) para regiões reais; emoji para ficcionais
+const REGION_FLAG = {
+  'Brasca':          '<span class="fi fi-br rflag"></span>',
+  'Dunnottar':       '<span class="fi fi-gb-sct rflag"></span>',
+  'Lekker':          '<span class="fi fi-za rflag"></span>',
+  'Rebueno':         '<span class="fi fi-ar rflag"></span>',
+  'Unknown':         '<span class="rflag-custom">⬛</span>',
+  'Zodiac':          '<span class="rflag-custom">✨</span>',
+  'Solar':           '<span class="rflag-custom">🌌</span>',
+  'Turtle':          '<span class="rflag-custom">🐢</span>',
+  'Paleta':          '<span class="fi fi-mx rflag"></span>'
+};
 
-let lang="pt", dex="all", region="all", typeF="all", query="";
+const REGIONS_PT = ["Metanikk Regions","Brasca","Dunnottar","Lekker","Rebueno","Unknown","Zodiac","Solar","Turtle","Paleta Mexicana"];
+const REGIONS_EN = ["Metanikk Regions","Brasca","Dunnottar","Lekker","Rebueno","Unknown","Zodiac","Solar","Turtle","Paleta Mexicana"];
+const REGION_KEYS = ["all","Brasca","Dunnottar","Lekker","Rebueno","Unknown","Zodiac","Solar","Turtle","Paleta"];
+
+const REGION_FOLDER = {
+  'Brasca':'Brasca','Dunnottar':'Dunnottar','Lekker':'Lekker',
+  'Rebueno':'Rebueno','Unknown':'Unknown','Zodiac':'Zodiac',
+  'Solar':'System Solar','Turtle':'Turtle','Paleta':'Paleta Mexicana'
+};
+
+let lang="pt", region="all", typeF="all", query="";
 
 function tn(t){return t?(lang==="pt"?TN_PT[t]||t:TN_EN[t]||t):"";}
 function tb(t){return `<span class="tb t-${t}">${tn(t)}</span>`;}
 
 function buildRegionNav(){
-  const rlist=lang==="pt"?REGIONS_PT:REGIONS_EN;
-  const keys=["all","Brasca","Dunnottar","Lekker","Rebueno","Unknown","Zodiac","Solar","Turtle","Paleta"];
-  document.getElementById("rnav").innerHTML=keys.map((k,i)=>`
+  const rlist = lang==="pt"?REGIONS_PT:REGIONS_EN;
+  document.getElementById("rnav").innerHTML = REGION_KEYS.map((k,i)=>`
     <button class="rbtn${region===k?" active":""}" onclick="setRegion('${k}')">
-      ${REGION_EMO[k]||""} ${rlist[i]}
+      ${k==="all"?'<span class="rflag-custom">🌐</span>':REGION_FLAG[k]||''}
+      ${rlist[i]}
     </button>`).join("");
 }
 
 function buildTypeFilter(){
-  const top=["all","Botanical","Water","Shadow","Arthropod","Spectral","Fire","Mentis","Neutral","Dragon","Electric","Frost","Venom","Metal","Mythic","Cosmic","Tribal","Sound","Combat","Chthonic","Mineral","Flying","Electric","Dragon"];
-  const unique=["all","Botanical","Water","Shadow","Arthropod","Spectral","Fire","Mentis","Neutral","Dragon","Electric","Frost","Venom","Metal","Mythic","Cosmic","Tribal","Sound","Combat","Chthonic","Mineral","Flying"];
+  const unique=["all","Botanical","Water","Shadow","Arthropod","Spectral","Fire","Mentis",
+    "Neutral","Dragon","Electric","Frost","Venom","Metal","Mythic","Cosmic","Tribal","Sound",
+    "Combat","Chthonic","Mineral","Flying"];
   const lbl=lang==="pt"?"Tipo:":"Type:";
   const allLbl=lang==="pt"?"Todos":"All";
   document.getElementById("fbar").innerHTML=`<span class="flbl">${lbl}</span>`+
@@ -207,25 +236,12 @@ function buildTypeFilter(){
 
 function filtered(){
   return DATA.filter(a=>{
-    if(dex==="unknown" && a.region!=="Unknown") return false;
     if(region!=="all" && a.region!==region) return false;
     if(typeF!=="all" && a.type1!==typeF && a.type2!==typeF) return false;
     if(query && !a.name.toLowerCase().includes(query.toLowerCase())) return false;
     return true;
   });
 }
-
-const REGION_FOLDER = {
-  'Brasca':    'Brasca',
-  'Dunnottar': 'Dunnottar',
-  'Lekker':    'Lekker',
-  'Rebueno':   'Rebueno',
-  'Unknown':   'Unknown',
-  'Zodiac':    'Zodiac',
-  'Solar':     'System Solar',
-  'Turtle':    'Turtle',
-  'Paleta':    'Paleta Mexicana'
-};
 
 function localImg(a){
   const folder = REGION_FOLDER[a.region] || a.region;
@@ -235,10 +251,8 @@ function localImg(a){
 
 function cardImg(a){
   const base = localImg(a);
-  const emoji = a.emoji;
-  const da = a.image_url || '';
-  return '<img src="' + base + '.png" alt="' + a.name + '" loading="lazy" ' +
-    'data-jpg="' + base + '.jpg" data-da="' + da + '" data-emoji="' + emoji + '" ' +
+  return '<img src="'+base+'.png" alt="'+a.name+'" loading="lazy" '+
+    'data-jpg="'+base+'.jpg" data-da="'+(a.image_url||'')+'" data-emoji="'+a.emoji+'" '+
     'onerror="imgFallback(this)">';
 }
 
@@ -246,118 +260,117 @@ function imgFallback(el){
   const jpg = el.getAttribute('data-jpg');
   const da  = el.getAttribute('data-da');
   const emo = el.getAttribute('data-emoji');
-  if(el.src.endsWith('.png') && jpg){
-    el.src = jpg;
-  } else if(!el.src.includes('deviantart') && da){
-    el.src = da;
-  } else {
-    el.parentElement.innerHTML = emo;
+  if(el.src.endsWith('.png') && jpg){ el.src=jpg; return; }
+  if(!el.src.includes('deviantart') && da){ el.src=da; return; }
+  el.parentElement.innerHTML = emo;
+}
+
+function buildPagination(total){
+  const pages = Math.ceil(total / PAGE_SIZE);
+  if(pages <= 1){ document.getElementById("pagination").innerHTML=""; return; }
+  let html = `<button class="pgbtn" onclick="goPage(${currentPage-1})" ${currentPage===1?"disabled":""}>‹</button>`;
+  const range = 2;
+  for(let p=1;p<=pages;p++){
+    if(p===1||p===pages||Math.abs(p-currentPage)<=range){
+      html+=`<button class="pgbtn${p===currentPage?" active":""}" onclick="goPage(${p})">${p}</button>`;
+    } else if(Math.abs(p-currentPage)===range+1){
+      html+=`<span class="pginfo">…</span>`;
+    }
   }
+  html+=`<button class="pgbtn" onclick="goPage(${currentPage+1})" ${currentPage===pages?"disabled":""}>›</button>`;
+  html+=`<span class="pginfo">${currentPage}/${pages}</span>`;
+  document.getElementById("pagination").innerHTML=html;
+}
+
+function goPage(p){
+  const total=filtered().length;
+  const pages=Math.ceil(total/PAGE_SIZE);
+  if(p<1||p>pages)return;
+  currentPage=p;
+  render();
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 
 function render(){
   const list=filtered();
-  document.getElementById("dcnt").textContent=`${list.length} animon`;
-  document.getElementById("grid").innerHTML=list.map(a=>`
+  const total=list.length;
+  const pages=Math.ceil(total/PAGE_SIZE);
+  if(currentPage>pages) currentPage=1;
+  const start=(currentPage-1)*PAGE_SIZE;
+  const page=list.slice(start,start+PAGE_SIZE);
+
+  document.getElementById("dcnt").textContent=`${total} animon`;
+  document.getElementById("grid").innerHTML=page.map(a=>`
     <div class="card" onclick="openModal(${a.mr})">
       <div class="cnum">#${String(a.mr).padStart(3,"0")} · ${a.region}</div>
       <div class="cimg">${cardImg(a)}</div>
       <div class="cname">${a.name}</div>
       <div class="types">${tb(a.type1)}${a.type2?tb(a.type2):""}</div>
     </div>`).join("");
+  buildPagination(total);
 }
 
 function openModal(mr){
   const a=DATA.find(x=>x.mr===mr); if(!a)return;
   document.getElementById("mnums").innerHTML=
     `<b>#${String(a.mr).padStart(3,"0")}</b> MetanikRegions<br><b>#${String(a.regional).padStart(3,"0")}</b> ${a.region}`;
-
   const imgEl=document.getElementById("mimg");
   const base=localImg(a);
-  const da=a.image_url||'';
-  const emo=a.emoji;
   imgEl.innerHTML='<img src="'+base+'.png" alt="'+a.name+'" '+
-    'data-jpg="'+base+'.jpg" data-da="'+da+'" data-emoji="'+emo+'" '+
+    'data-jpg="'+base+'.jpg" data-da="'+(a.image_url||'')+'" data-emoji="'+a.emoji+'" '+
     'onerror="imgFallback(this)">';
-
   document.getElementById("mname").textContent=a.name;
   document.getElementById("mtypes").innerHTML=tb(a.type1)+(a.type2?tb(a.type2):"");
   document.getElementById("mspec").textContent=a.species||(lang==="pt"?"N/D":"N/A");
-
   const daEl=document.getElementById("mda");
-  if(a.deviantart_url){
-    daEl.innerHTML=`<a class="mda-link" href="${a.deviantart_url}" target="_blank">Ver no DeviantArt ↗</a>`;
-  } else {
-    daEl.innerHTML="";
-  }
-
+  daEl.innerHTML=a.deviantart_url?`<a class="mda-link" href="${a.deviantart_url}" target="_blank">Ver no DeviantArt ↗</a>`:"";
   document.getElementById("s_desc").textContent=lang==="pt"?"Descrição":"Description";
   document.getElementById("s_abil").textContent=lang==="pt"?"Habilidades":"Abilities";
   document.getElementById("s_info").textContent=lang==="pt"?"Informações":"Information";
   document.getElementById("s_insp").textContent=lang==="pt"?"Inspiração":"Inspiration";
-
   const descText=lang==="pt"?a.description_pt:a.description_en;
   const nd=lang==="pt"?"N/D — disponível no DeviantArt":"N/A — available on DeviantArt";
-  document.getElementById("mdesc").innerHTML=descText
-    ?`<p class="lore">${descText}</p>`
-    :`<p class="nd">${nd}</p>`;
-
+  document.getElementById("mdesc").innerHTML=descText?`<p class="lore">${descText}</p>`:`<p class="nd">${nd}</p>`;
   const noHa=lang==="pt"?"Não possui":"Does not have";
   document.getElementById("mabil").innerHTML=`
     <div class="irow"><div><div class="ikey">${lang==="pt"?"Habilidade":"Ability"}</div><div class="ival">${a.ability1||"—"}</div></div><span class="atag">1</span></div>
     ${a.ability2?`<div class="irow"><div><div class="ikey">${lang==="pt"?"Habilidade":"Ability"} 2</div><div class="ival">${a.ability2}</div></div><span class="atag">2</span></div>`:""}
     <div class="irow"><div><div class="ikey">${lang==="pt"?"Hab. Oculta":"Hidden Ability"}</div><div class="ival ${a.ha?"":"nd"}">${a.ha||noHa}</div></div>${a.ha?`<span class="atag hatag">HA</span>`:""}</div>`;
-
   const nd2=lang==="pt"?"N/D":"N/A";
   document.getElementById("minfo").innerHTML=`
     <div class="iitem"><div class="ikey">${lang==="pt"?"Altura":"Height"}</div><div class="ival">${a.height?a.height+"m":nd2}</div></div>
     <div class="iitem"><div class="ikey">${lang==="pt"?"Peso":"Weight"}</div><div class="ival">${a.weight?a.weight+"kg":nd2}</div></div>
     <div class="iitem"><div class="ikey">Habitat</div><div class="ival">${a.habitat||nd2}</div></div>
     <div class="iitem"><div class="ikey">${lang==="pt"?"Alimentação":"Feeding"}</div><div class="ival">${a.feeding||nd2}</div></div>`;
-
   if(a.inspiration){
     document.getElementById("minsp").innerHTML=`<div class="insp"><b>${a.inspiration}</b></div>`;
     document.getElementById("sec_insp").style.display="";
   } else {
     document.getElementById("sec_insp").style.display="none";
   }
-
   document.getElementById("ov").classList.add("open");
 }
 
 function closeModal(){document.getElementById("ov").classList.remove("open");}
 function closeOv(e){if(e.target===document.getElementById("ov"))closeModal();}
-
-function setDex(d,btn){
-  dex=d;
-  document.querySelectorAll(".ntab").forEach(b=>b.classList.remove("active"));
-  btn.classList.add("active");
-  document.getElementById("dtitle").textContent=d==="unknown"?"Unknown Dex":"MetanikRegions Dex";
-  render();
-}
-function setRegion(r){region=r;buildRegionNav();render();}
-function setType(t,btn){typeF=t;buildTypeFilter();render();}
-function doSearch(q){query=q;render();}
+function setRegion(r){region=r;currentPage=1;buildRegionNav();render();}
+function setType(t){typeF=t;currentPage=1;buildTypeFilter();render();}
+function doSearch(q){query=q;currentPage=1;render();}
 function setLang(l,btn){
   lang=l;
   document.querySelectorAll(".lbtn").forEach(b=>b.classList.remove("active"));
   btn.classList.add("active");
-  buildRegionNav();
-  buildTypeFilter();
-  render();
+  buildRegionNav();buildTypeFilter();render();
 }
 
-// Carrega dados do JSON externo
 fetch('data/animons.json')
   .then(r=>r.json())
   .then(data=>{
     DATA=data;
-    buildRegionNav();
-    buildTypeFilter();
-    render();
+    buildRegionNav();buildTypeFilter();render();
   })
   .catch(err=>{
-    document.getElementById("grid").innerHTML=`<div class="loading">Erro ao carregar dados: ${err.message}</div>`;
+    document.getElementById("grid").innerHTML=`<div class="loading">Erro ao carregar: ${err.message}</div>`;
   });
 </script>
 </body>
