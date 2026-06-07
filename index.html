@@ -215,11 +215,44 @@ function filtered(){
   });
 }
 
+const REGION_FOLDER = {
+  'Brasca':    'Brasca',
+  'Dunnottar': 'Dunnottar',
+  'Lekker':    'Lekker',
+  'Rebueno':   'Rebueno',
+  'Unknown':   'Unknown',
+  'Zodiac':    'Zodiac',
+  'Solar':     'System Solar',
+  'Turtle':    'Turtle',
+  'Paleta':    'Paleta Mexicana'
+};
+
+function localImg(a){
+  const folder = REGION_FOLDER[a.region] || a.region;
+  const num = String(a.regional).padStart(3,'0');
+  return 'images/' + folder + '/' + num;
+}
+
 function cardImg(a){
-  if(a.image_url){
-    return `<img src="${a.image_url}" alt="${a.name}" loading="lazy" onerror="this.parentElement.innerHTML='${a.emoji}'">`;
+  const base = localImg(a);
+  const emoji = a.emoji;
+  const da = a.image_url || '';
+  return '<img src="' + base + '.png" alt="' + a.name + '" loading="lazy" ' +
+    'data-jpg="' + base + '.jpg" data-da="' + da + '" data-emoji="' + emoji + '" ' +
+    'onerror="imgFallback(this)">';
+}
+
+function imgFallback(el){
+  const jpg = el.getAttribute('data-jpg');
+  const da  = el.getAttribute('data-da');
+  const emo = el.getAttribute('data-emoji');
+  if(el.src.endsWith('.png') && jpg){
+    el.src = jpg;
+  } else if(!el.src.includes('deviantart') && da){
+    el.src = da;
+  } else {
+    el.parentElement.innerHTML = emo;
   }
-  return a.emoji;
 }
 
 function render(){
@@ -240,11 +273,12 @@ function openModal(mr){
     `<b>#${String(a.mr).padStart(3,"0")}</b> MetanikRegions<br><b>#${String(a.regional).padStart(3,"0")}</b> ${a.region}`;
 
   const imgEl=document.getElementById("mimg");
-  if(a.image_url){
-    imgEl.innerHTML=`<img src="${a.image_url}" alt="${a.name}" onerror="this.parentElement.textContent='${a.emoji}'">`;
-  } else {
-    imgEl.textContent=a.emoji;
-  }
+  const base=localImg(a);
+  const da=a.image_url||'';
+  const emo=a.emoji;
+  imgEl.innerHTML='<img src="'+base+'.png" alt="'+a.name+'" '+
+    'data-jpg="'+base+'.jpg" data-da="'+da+'" data-emoji="'+emo+'" '+
+    'onerror="imgFallback(this)">';
 
   document.getElementById("mname").textContent=a.name;
   document.getElementById("mtypes").innerHTML=tb(a.type1)+(a.type2?tb(a.type2):"");
