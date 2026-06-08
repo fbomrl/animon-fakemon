@@ -183,7 +183,7 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 28
   </div>
   <div class="nav-tabs">
     <button class="ntab active" id="tab-dashboard" onclick="showScreen('dashboard')">Dashboard</button>
-    <button class="ntab" id="tab-dex" onclick="showScreen('dex')">Pokédex</button>
+    <button class="ntab" id="tab-dex" onclick="showScreen('dex')">Bestiário</button>
   </div>
   <div class="nav-r">
     <input class="srch" id="srch" placeholder="Buscar animon..." oninput="doSearch(this.value)">
@@ -347,7 +347,7 @@ function showScreen(name){
   document.getElementById("screen-"+name).classList.add("active");
   document.getElementById("tab-"+name).classList.add("active");
   if(name==="dex"){buildRegionNav();buildTypeFilter();render();}
-  if(name==="dashboard" && DATA.length) buildDashboard();
+  if(name==="dashboard"&&DATA.length){buildDashboard();}
   gtag("event","page_view",{page_title:name});
 }
 
@@ -656,7 +656,7 @@ fetch("data/animons.json")
   .then(r=>r.json())
   .then(data=>{
     DATA=data;
-    buildDashboard();
+    showScreen("dashboard");
   })
   .catch(err=>{
     document.getElementById("grid").innerHTML=`<div class="loading">Erro: ${err.message}</div>`;
