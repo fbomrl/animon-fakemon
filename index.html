@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Animon Fakemon</title>
+<link rel="icon" type="image/png" href="images/ZLOGO.png">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.0.0/css/flag-icons.min.css">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -24,7 +25,9 @@
 body{background:var(--bg);color:var(--text);font-family:"Segoe UI",system-ui,sans-serif}
 nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 28px;
   height:56px;display:flex;align-items:center;position:sticky;top:0;z-index:200}
-.logo{font-size:17px;font-weight:800;margin-right:28px;
+.logo{display:flex;align-items:center;gap:8px;margin-right:28px;text-decoration:none}
+.logo img{height:32px;width:auto}
+.logo-text{font-size:17px;font-weight:800;
   background:linear-gradient(135deg,#a67de8,#7c5cbf);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;white-space:nowrap}
 .nav-r{margin-left:auto;display:flex;gap:8px;align-items:center}
@@ -134,7 +137,10 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 28
 </head>
 <body>
 <nav>
-  <div class="logo">✦ Metanikk Regions</div>
+  <div class="logo">
+    <img src="images/ZLOGO.png" alt="Metanikk Regions logo">
+    <span class="logo-text">Metanikk Regions</span>
+  </div>
   <div class="nav-r">
     <input class="srch" placeholder="Buscar animon..." oninput="doSearch(this.value)">
     <div class="lang">
@@ -205,6 +211,8 @@ const REGIONS_PT = ["Metanikk Regions","Brasca","Dunnottar","Lekker","Rebueno","
 const REGIONS_EN = ["Metanikk Regions","Brasca","Dunnottar","Lekker","Rebueno","Unknown","Zodiac","Solar","Turtle","Paleta Mexicana"];
 const REGION_KEYS = ["all","Brasca","Dunnottar","Lekker","Rebueno","Unknown","Zodiac","Solar","Turtle","Paleta"];
 
+const REGION_OFFSET = {'Unknown':540,'Zodiac':501,'Solar':513,'Turtle':522,'Paleta':688};
+
 const REGION_FOLDER = {
   'Brasca':'Brasca','Dunnottar':'Dunnottar','Lekker':'Lekker',
   'Rebueno':'Rebueno','Unknown':'Unknown','Zodiac':'Zodiac',
@@ -246,7 +254,9 @@ function filtered(){
 
 function localImg(a){
   const folder = REGION_FOLDER[a.region] || a.region;
-  const num = String(a.regional).padStart(3,'0');
+  const offset = REGION_OFFSET[a.region] || 0;
+  const seq = a.regional - offset;
+  const num = String(seq).padStart(3,'0');
   return 'images/' + folder + '/' + num;
 }
 
