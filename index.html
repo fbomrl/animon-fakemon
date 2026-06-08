@@ -132,14 +132,14 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 28
 .mcls{position:absolute;top:14px;right:14px;background:var(--card);border:1px solid var(--border);
   color:var(--text);width:30px;height:30px;border-radius:50%;font-size:15px;
   cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:10}
-.mhero{display:grid;grid-template-columns:240px 1fr}
+.mhero{display:grid;grid-template-columns:280px 1fr}
 .mleft{padding:26px 18px;border-right:1px solid var(--border);
   display:flex;flex-direction:column;align-items:center;gap:9px;
   background:linear-gradient(135deg,rgba(124,92,191,.07),transparent)}
 .mnums{font-size:11px;color:var(--muted);font-weight:600;text-align:center;line-height:2}
-.mimg{width:180px;height:180px;border-radius:14px;background:rgba(255,255,255,.03);
-  display:flex;align-items:center;justify-content:center;font-size:80px;overflow:hidden}
-.mimg img{width:100%;height:100%;object-fit:cover;border-radius:14px}
+.mimg{width:100%;aspect-ratio:1;border-radius:14px;background:rgba(255,255,255,.03);
+  display:flex;align-items:center;justify-content:center;font-size:100px;overflow:hidden}
+.mimg img{width:100%;height:100%;object-fit:contain;border-radius:14px}
 .mname{font-size:21px;font-weight:800;text-align:center}
 .mtypes{display:flex;gap:5px;flex-wrap:wrap;justify-content:center}
 .mtypes .tb{font-size:12px;padding:4px 13px}
@@ -168,7 +168,8 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 28
 @media(max-width:900px){.charts-row{grid-template-columns:1fr}}
 @media(max-width:660px){
   .mhero{grid-template-columns:1fr}
-  .mleft{border-right:none;border-bottom:1px solid var(--border)}
+  .mleft{border-right:none;border-bottom:1px solid var(--border);padding:20px}
+  .mimg{width:80vw;max-width:320px;aspect-ratio:1;margin:0 auto}
   .grid{grid-template-columns:repeat(auto-fill,minmax(120px,1fr));padding:10px 16px 20px}
   nav{padding:0 14px}.rnav,.fbar,.dhead,.grid{padding-left:14px;padding-right:14px}
   .dash{padding:16px}
