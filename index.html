@@ -14,8 +14,8 @@
 .t-Neutral{background:#616161}.t-Fire{background:#c94020}.t-Combat{background:#9b1c1c}
 .t-Water{background:#1255a0}.t-Flying{background:#4a2a9b}.t-Botanical{background:#256325}
 .t-Venom{background:#5a1485}.t-Electric{background:#d4971b;color:#111}
-.t-Chthonic{background:#5d3c31}.t-Mentis{background:#a01550}.t-Mineral{background:#455a64}
-.t-Frost{background:#005460}.t-Arthropod{background:#295618}.t-Dragon{background:#151b6e}
+.t-Chthonic{background:#5d3c31}.t-Mentis{background:#c0206a}.t-Mineral{background:#455a64}
+.t-Frost{background:#005460}.t-Arthropod{background:#7a9e1a;color:#111}.t-Dragon{background:#151b6e}
 .t-Spectral{background:#3d1178}.t-Shadow{background:#1a1a1a;border:1px solid #555}
 .t-Metal{background:#6a8090;color:#111}.t-Mythic{background:#941040}
 .t-Cosmic{background:#100225;border:1px solid #7c5cbf}.t-Sound{background:#00707a}
@@ -42,8 +42,8 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 28
   border:none;background:none;border-bottom:2px solid transparent;white-space:nowrap;
   transition:all .2s;display:flex;align-items:center;gap:6px}
 .rbtn.active,.rbtn:hover{color:var(--text);border-bottom-color:var(--accent2)}
-.rflag{width:20px;height:14px;border-radius:2px;object-fit:cover;display:inline-block}
-.rflag-custom{font-size:16px;line-height:1}
+.rflag{width:20px;height:15px;border-radius:2px;display:inline-block;vertical-align:middle}
+.rflag-custom{font-size:15px;line-height:1;vertical-align:middle}
 .fbar{padding:10px 28px;display:flex;gap:6px;flex-wrap:wrap;
   align-items:center;border-bottom:1px solid var(--border)}
 .flbl{font-size:12px;color:var(--muted);margin-right:2px}
@@ -65,9 +65,10 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 28
 .cimg img{width:100%;height:100%;object-fit:cover;border-radius:8px}
 .cname{font-size:13px;font-weight:700;margin-bottom:7px;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.types{display:flex;gap:3px;flex-wrap:wrap}
-.tb{padding:2px 7px;border-radius:20px;font-size:10px;font-weight:600;
-  color:#fff;text-transform:uppercase;letter-spacing:.3px}
+.types{display:flex;gap:3px;flex-wrap:nowrap;overflow:hidden}
+.tb{padding:2px 6px;border-radius:20px;font-size:9px;font-weight:600;
+  color:#fff;text-transform:uppercase;letter-spacing:.2px;white-space:nowrap;
+  flex-shrink:1;min-width:0;overflow:hidden;text-overflow:ellipsis}
 .loading{display:flex;align-items:center;justify-content:center;
   height:200px;font-size:15px;color:var(--muted)}
 /* PAGINAÇÃO */
@@ -175,16 +176,16 @@ let DATA = [];
 const PAGE_SIZE = 60;
 let currentPage = 1;
 
-const TN_PT={Neutral:"Neutro",Fire:"Fogo",Combat:"Combate",Water:"Água",Flying:"Voador",
-  Botanical:"Botânico",Venom:"Veneno",Electric:"Elétrico",Chthonic:"Terra",
-  Mentis:"Mental",Mineral:"Mineral",Frost:"Gélido",Arthropod:"Artrópode",
-  Dragon:"Dragão",Spectral:"Espectral",Shadow:"Sombrio",Metal:"Metal",
+const TN_PT={Neutral:"Neutro",Fire:"Fogo",Combat:"Combate",Water:"Água",Flying:"Ar",
+  Botanical:"Botânico",Venom:"Tóxico",Electric:"Elétrico",Chthonic:"Terra",
+  Mentis:"Psíquico",Mineral:"Mineral",Frost:"Glacial",Arthropod:"Artrópode",
+  Dragon:"Dracônico",Spectral:"Espectral",Shadow:"Sombrio",Metal:"Metal",
   Mythic:"Mítico",Cosmic:"Cósmico",Sound:"Som",Tribal:"Tribal",
   Fungal:"Fúngico",Machine:"Máquina",Microbial:"Microbiano"};
 const TN_EN={Neutral:"Neutral",Fire:"Fire",Combat:"Combat",Water:"Water",Flying:"Flying",
-  Botanical:"Botanical",Venom:"Venom",Electric:"Electric",Chthonic:"Ground",
-  Mentis:"Psychic",Mineral:"Rock",Frost:"Ice",Arthropod:"Bug",
-  Dragon:"Dragon",Spectral:"Ghost",Shadow:"Dark",Metal:"Steel",Mythic:"Fairy",
+  Botanical:"Botanical",Venom:"Venom",Electric:"Electric",Chthonic:"Chthonic",
+  Mentis:"Mentis",Mineral:"Mineral",Frost:"Frost",Arthropod:"Arthropod",
+  Dragon:"Dragon",Spectral:"Spectral",Shadow:"Shadow",Metal:"Metal",Mythic:"Mythic",
   Cosmic:"Cosmic",Sound:"Sound",Tribal:"Tribal",Fungal:"Fungal",Machine:"Machine",Microbial:"Microbial"};
 
 // flag-icons códigos (fi fi-XX) para regiões reais; emoji para ficcionais
