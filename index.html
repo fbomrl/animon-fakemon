@@ -211,7 +211,6 @@ const REGIONS_PT = ["Metanikk Regions","Brasca","Dunnottar","Lekker","Rebueno","
 const REGIONS_EN = ["Metanikk Regions","Brasca","Dunnottar","Lekker","Rebueno","Unknown","Zodiac","Solar","Turtle","Paleta Mexicana"];
 const REGION_KEYS = ["all","Brasca","Dunnottar","Lekker","Rebueno","Unknown","Zodiac","Solar","Turtle","Paleta"];
 
-const REGION_OFFSET = {'Unknown':540,'Zodiac':501,'Solar':513,'Turtle':522,'Paleta':688};
 
 const REGION_FOLDER = {
   'Brasca':'Brasca','Dunnottar':'Dunnottar','Lekker':'Lekker',
@@ -254,8 +253,7 @@ function filtered(){
 
 function localImg(a){
   const folder = REGION_FOLDER[a.region] || a.region;
-  const offset = REGION_OFFSET[a.region] || 0;
-  const seq = a.regional - offset;
+  const seq = a.img_seq || a.regional;
   const num = String(seq).padStart(3,'0');
   return 'images/' + folder + '/' + num;
 }
