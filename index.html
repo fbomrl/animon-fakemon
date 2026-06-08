@@ -3,9 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Animon Fakemon</title>
+<title>Metanikk Regions — Animon Fakemon</title>
 <link rel="icon" type="image/png" href="images/ZLOGO.png">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.0.0/css/flag-icons.min.css">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ELJT5QPY17"></script>
+<script>
+window.dataLayer=window.dataLayer||[];
+function gtag(){dataLayer.push(arguments);}
+gtag('js',new Date());
+gtag('config','G-ELJT5QPY17');
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -23,13 +31,19 @@
 .t-Tribal{background:#a02c08}.t-Fungal{background:#487025}.t-Machine{background:#2e3d45}
 .t-Microbial{background:#164d15}
 body{background:var(--bg);color:var(--text);font-family:"Segoe UI",system-ui,sans-serif}
+/* NAV */
 nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 28px;
   height:56px;display:flex;align-items:center;position:sticky;top:0;z-index:200}
-.logo{display:flex;align-items:center;gap:8px;margin-right:28px;text-decoration:none}
+.logo{display:flex;align-items:center;gap:8px;margin-right:20px;text-decoration:none;cursor:pointer}
 .logo img{height:32px;width:auto}
 .logo-text{font-size:17px;font-weight:800;
   background:linear-gradient(135deg,#a67de8,#7c5cbf);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;white-space:nowrap}
+.nav-tabs{display:flex;gap:2px}
+.ntab{padding:6px 14px;border-radius:7px;font-size:13px;font-weight:600;
+  color:var(--muted);cursor:pointer;border:none;background:none;transition:all .2s}
+.ntab.active{background:rgba(124,92,191,.18);color:var(--accent2)}
+.ntab:hover{color:var(--text)}
 .nav-r{margin-left:auto;display:flex;gap:8px;align-items:center}
 .srch{background:var(--card);border:1px solid var(--border);color:var(--text);
   padding:6px 12px;border-radius:7px;font-size:13px;width:190px;outline:none}
@@ -38,6 +52,32 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 28
 .lbtn{padding:5px 11px;font-size:12px;font-weight:600;cursor:pointer;
   border:none;background:var(--card);color:var(--muted);transition:all .2s}
 .lbtn.active{background:var(--accent);color:#fff}
+/* SCREENS */
+.screen{display:none}
+.screen.active{display:block}
+/* DASHBOARD */
+.dash{padding:28px}
+.dash-hero{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px;margin-bottom:28px}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;
+  padding:20px;display:flex;flex-direction:column;gap:6px}
+.stat-val{font-size:32px;font-weight:800;
+  background:linear-gradient(135deg,#a67de8,#7c5cbf);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat-lbl{font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.stat-sub{font-size:11px;color:var(--muted)}
+.dash-section{margin-bottom:32px}
+.dash-title{font-size:15px;font-weight:700;color:var(--text);margin-bottom:14px;
+  padding-bottom:8px;border-bottom:1px solid var(--border)}
+.charts-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.chart-box{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px}
+.chart-box h4{font-size:13px;color:var(--muted);margin-bottom:16px;font-weight:600;text-transform:uppercase;letter-spacing:.4px}
+.chart-wrap{position:relative;height:280px}
+.chart-wrap-tall{position:relative;height:380px}
+.compare-controls{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;align-items:center}
+.compare-controls select{background:var(--card);border:1px solid var(--border);
+  color:var(--text);padding:5px 10px;border-radius:7px;font-size:13px;outline:none}
+.compare-controls label{font-size:13px;color:var(--muted)}
+/* DEX */
 .rnav{background:var(--surface);border-bottom:1px solid var(--border);
   padding:0 28px;display:flex;gap:0;overflow-x:auto;scrollbar-width:none}
 .rnav::-webkit-scrollbar{display:none}
@@ -74,7 +114,6 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 28
   flex-shrink:1;min-width:0;overflow:hidden;text-overflow:ellipsis}
 .loading{display:flex;align-items:center;justify-content:center;
   height:200px;font-size:15px;color:var(--muted)}
-/* PAGINAÇÃO */
 .pagination{display:flex;justify-content:center;align-items:center;
   gap:8px;padding:16px 28px 32px}
 .pgbtn{padding:6px 14px;border-radius:7px;font-size:13px;font-weight:500;
@@ -109,7 +148,6 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 28
 .mda-link{font-size:11px;color:var(--accent2);text-decoration:none;
   background:rgba(124,92,191,.15);padding:3px 10px;border-radius:20px;
   border:1px solid var(--border);display:inline-block;margin-top:4px}
-.mda-link:hover{background:rgba(124,92,191,.3)}
 .mright{padding:22px 24px}
 .sec{margin-bottom:20px}
 .stitle{font-size:11px;text-transform:uppercase;letter-spacing:.8px;
@@ -127,34 +165,102 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 28
 .hatag{background:rgba(245,166,35,.15);color:#f9a825}
 .insp{background:var(--card);border-radius:7px;padding:9px 13px;font-size:13px;color:rgba(232,232,240,.8)}
 .insp b{color:var(--accent2)}
+@media(max-width:900px){.charts-row{grid-template-columns:1fr}}
 @media(max-width:660px){
   .mhero{grid-template-columns:1fr}
   .mleft{border-right:none;border-bottom:1px solid var(--border)}
   .grid{grid-template-columns:repeat(auto-fill,minmax(120px,1fr));padding:10px 16px 20px}
   nav{padding:0 14px}.rnav,.fbar,.dhead,.grid{padding-left:14px;padding-right:14px}
+  .dash{padding:16px}
 }
 </style>
 </head>
 <body>
 <nav>
-  <div class="logo">
-    <img src="images/ZLOGO.png" alt="Metanikk Regions logo">
+  <div class="logo" onclick="showScreen('dashboard')">
+    <img src="images/ZLOGO.png" alt="Metanikk Regions">
     <span class="logo-text">Metanikk Regions</span>
   </div>
+  <div class="nav-tabs">
+    <button class="ntab active" id="tab-dashboard" onclick="showScreen('dashboard')">Dashboard</button>
+    <button class="ntab" id="tab-dex" onclick="showScreen('dex')">Pokédex</button>
+  </div>
   <div class="nav-r">
-    <input class="srch" placeholder="Buscar animon..." oninput="doSearch(this.value)">
+    <input class="srch" id="srch" placeholder="Buscar animon..." oninput="doSearch(this.value)">
     <div class="lang">
       <button class="lbtn active" onclick="setLang('pt',this)">PT</button>
       <button class="lbtn" onclick="setLang('en',this)">EN</button>
     </div>
   </div>
 </nav>
-<div class="rnav" id="rnav"></div>
-<div class="fbar" id="fbar"></div>
-<div class="dhead"><div class="dtitle" id="dtitle">Metanikk Regions</div><div class="dcnt" id="dcnt"></div></div>
-<div class="grid" id="grid"><div class="loading">Carregando animon...</div></div>
-<div class="pagination" id="pagination"></div>
 
+<!-- DASHBOARD -->
+<div class="screen active" id="screen-dashboard">
+<div class="dash">
+  <div class="dash-hero" id="dash-stats"></div>
+
+  <div class="dash-section">
+    <div class="dash-title" id="dash-t1">Distribuição por Região</div>
+    <div class="charts-row">
+      <div class="chart-box">
+        <h4 id="dash-t-region-bar">Animon por Região</h4>
+        <div class="chart-wrap"><canvas id="chartRegion"></canvas></div>
+      </div>
+      <div class="chart-box">
+        <h4 id="dash-t-region-donut">Proporção por Região</h4>
+        <div class="chart-wrap"><canvas id="chartRegionDonut"></canvas></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dash-section">
+    <div class="dash-title" id="dash-t2">Distribuição por Tipo</div>
+    <div class="charts-row">
+      <div class="chart-box">
+        <h4 id="dash-t-type1">Tipo Primário</h4>
+        <div class="chart-wrap-tall"><canvas id="chartType1"></canvas></div>
+      </div>
+      <div class="chart-box">
+        <h4 id="dash-t-type2">Tipo Secundário</h4>
+        <div class="chart-wrap-tall"><canvas id="chartType2"></canvas></div>
+      </div>
+    </div>
+    <div class="chart-box" style="margin-top:16px">
+      <h4 id="dash-t-typeall">Total por Tipo (primário + secundário)</h4>
+      <div class="chart-wrap-tall"><canvas id="chartTypeAll"></canvas></div>
+    </div>
+  </div>
+
+  <div class="dash-section">
+    <div class="dash-title" id="dash-t3">Comparativo entre Regiões</div>
+    <div class="chart-box">
+      <div class="compare-controls">
+        <label id="dash-compare-lbl">Comparar:</label>
+        <select id="cmp1"></select>
+        <span style="color:var(--muted)">vs</span>
+        <select id="cmp2"></select>
+        <select id="cmp-metric">
+          <option value="type1">Tipo Primário</option>
+          <option value="type2">Tipo Secundário</option>
+          <option value="both">Ambos os Tipos</option>
+        </select>
+      </div>
+      <div class="chart-wrap-tall"><canvas id="chartCompare"></canvas></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- DEX -->
+<div class="screen" id="screen-dex">
+  <div class="rnav" id="rnav"></div>
+  <div class="fbar" id="fbar"></div>
+  <div class="dhead"><div class="dtitle" id="dtitle">Metanikk Regions</div><div class="dcnt" id="dcnt"></div></div>
+  <div class="grid" id="grid"><div class="loading">Carregando animon...</div></div>
+  <div class="pagination" id="pagination"></div>
+</div>
+
+<!-- MODAL -->
 <div class="ov" id="ov" onclick="closeOv(event)">
 <div class="modal">
   <button class="mcls" onclick="closeModal()">✕</button>
@@ -178,9 +284,9 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 28
 </div>
 
 <script>
-let DATA = [];
-const PAGE_SIZE = 60;
-let currentPage = 1;
+let DATA=[], lang="pt", region="all", typeF="all", query="";
+const PAGE_SIZE=60; let currentPage=1;
+let chartInstances={};
 
 const TN_PT={Neutral:"Neutro",Fire:"Fogo",Combat:"Combate",Water:"Água",Flying:"Ar",
   Botanical:"Botânico",Venom:"Tóxico",Electric:"Elétrico",Chthonic:"Terra",
@@ -194,38 +300,214 @@ const TN_EN={Neutral:"Neutral",Fire:"Fire",Combat:"Combat",Water:"Water",Flying:
   Dragon:"Dragon",Spectral:"Spectral",Shadow:"Shadow",Metal:"Metal",Mythic:"Mythic",
   Cosmic:"Cosmic",Sound:"Sound",Tribal:"Tribal",Fungal:"Fungal",Machine:"Machine",Microbial:"Microbial"};
 
-// flag-icons códigos (fi fi-XX) para regiões reais; emoji para ficcionais
-const REGION_FLAG = {
-  'Brasca':          '<span class="fi fi-br rflag"></span>',
-  'Dunnottar':       '<span class="fi fi-gb-sct rflag"></span>',
-  'Lekker':          '<span class="fi fi-za rflag"></span>',
-  'Rebueno':         '<span class="fi fi-ar rflag"></span>',
-  'Unknown':         '<span class="rflag-custom">⬛</span>',
-  'Zodiac':          '<span class="rflag-custom">✨</span>',
-  'Solar':           '<span class="rflag-custom">🌌</span>',
-  'Turtle':          '<span class="rflag-custom">🐢</span>',
-  'Paleta':          '<span class="fi fi-mx rflag"></span>'
+const TYPE_COLORS={
+  Neutral:"#616161",Fire:"#c94020",Combat:"#9b1c1c",Water:"#1255a0",Flying:"#4a2a9b",
+  Botanical:"#256325",Venom:"#5a1485",Electric:"#d4971b",Chthonic:"#5d3c31",
+  Mentis:"#c0206a",Mineral:"#455a64",Frost:"#005460",Arthropod:"#7a9e1a",
+  Dragon:"#151b6e",Spectral:"#3d1178",Shadow:"#444",Metal:"#6a8090",
+  Mythic:"#941040",Cosmic:"#3a0070",Sound:"#00707a",Tribal:"#a02c08",
+  Fungal:"#487025",Machine:"#2e3d45",Microbial:"#164d15"
 };
 
-const REGIONS_PT = ["Metanikk Regions","Brasca","Dunnottar","Lekker","Rebueno","Unknown","Zodiac","Solar","Turtle","Paleta Mexicana"];
-const REGIONS_EN = ["Metanikk Regions","Brasca","Dunnottar","Lekker","Rebueno","Unknown","Zodiac","Solar","Turtle","Paleta Mexicana"];
-const REGION_KEYS = ["all","Brasca","Dunnottar","Lekker","Rebueno","Unknown","Zodiac","Solar","Turtle","Paleta"];
-
-
-const REGION_FOLDER = {
-  'Brasca':'Brasca','Dunnottar':'Dunnottar','Lekker':'Lekker',
-  'Rebueno':'Rebueno','Unknown':'Unknown','Zodiac':'Zodiac',
-  'Solar':'System Solar','Turtle':'Turtle','Paleta':'Paleta Mexicana'
+const REGION_COLORS={
+  Brasca:"#1a8c3a",Dunnottar:"#1a4a8c",Lekker:"#8c1a1a",Rebueno:"#8c6b1a",
+  Unknown:"#4a4a4a",Zodiac:"#6b1a8c",Solar:"#8c7a1a",Turtle:"#1a7a8c",Paleta:"#8c1a5a"
 };
 
-let lang="pt", region="all", typeF="all", query="";
+const REGION_FLAG={
+  Brasca:'<span class="fi fi-br rflag"></span>',
+  Dunnottar:'<span class="fi fi-gb-sct rflag"></span>',
+  Lekker:'<span class="fi fi-za rflag"></span>',
+  Rebueno:'<span class="fi fi-ar rflag"></span>',
+  Unknown:'<span class="rflag-custom">⬛</span>',
+  Zodiac:'<span class="rflag-custom">✨</span>',
+  Solar:'<span class="rflag-custom">🌌</span>',
+  Turtle:'<span class="rflag-custom">🐢</span>',
+  Paleta:'<span class="fi fi-mx rflag"></span>'
+};
 
+const REGIONS_PT=["Metanikk Regions","Brasca","Dunnottar","Lekker","Rebueno","Unknown","Zodiac","Solar","Turtle","Paleta Mexicana"];
+const REGIONS_EN=["Metanikk Regions","Brasca","Dunnottar","Lekker","Rebueno","Unknown","Zodiac","Solar","Turtle","Paleta Mexicana"];
+const REGION_KEYS=["all","Brasca","Dunnottar","Lekker","Rebueno","Unknown","Zodiac","Solar","Turtle","Paleta"];
+const REGION_FOLDER={
+  Brasca:"Brasca",Dunnottar:"Dunnottar",Lekker:"Lekker",Rebueno:"Rebueno",
+  Unknown:"Unknown",Zodiac:"Zodiac",Solar:"System Solar",Turtle:"Turtle",Paleta:"Paleta Mexicana"
+};
+
+const CHART_DEFAULTS={
+  plugins:{legend:{labels:{color:"#e8e8f0",font:{size:11}}}},
+  scales:{x:{ticks:{color:"#6b6b8f"},grid:{color:"rgba(255,255,255,.05)"}},
+          y:{ticks:{color:"#6b6b8f"},grid:{color:"rgba(255,255,255,.05)"}}}
+};
+
+// SCREEN MANAGEMENT
+function showScreen(name){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  document.querySelectorAll(".ntab").forEach(t=>t.classList.remove("active"));
+  document.getElementById("screen-"+name).classList.add("active");
+  document.getElementById("tab-"+name).classList.add("active");
+  if(name==="dex"){buildRegionNav();buildTypeFilter();render();}
+  if(name==="dashboard" && DATA.length) buildDashboard();
+  gtag("event","page_view",{page_title:name});
+}
+
+// UTILS
 function tn(t){return t?(lang==="pt"?TN_PT[t]||t:TN_EN[t]||t):"";}
 function tb(t){return `<span class="tb t-${t}">${tn(t)}</span>`;}
+function countBy(arr,fn){
+  const m={};arr.forEach(a=>{const k=fn(a);if(k){m[k]=(m[k]||0)+1;}});return m;
+}
+function destroyChart(id){if(chartInstances[id]){chartInstances[id].destroy();delete chartInstances[id];}}
 
+// DASHBOARD
+function buildDashboard(){
+  const total=DATA.length;
+  const regions=[...new Set(DATA.map(a=>a.region))];
+  const types=[...new Set(DATA.flatMap(a=>[a.type1,a.type2]).filter(Boolean))];
+  const withImg=DATA.filter(a=>a.img_seq).length;
+
+  // Stats cards
+  document.getElementById("dash-stats").innerHTML=`
+    <div class="stat-card"><div class="stat-val">${total}</div><div class="stat-lbl">${lang==="pt"?"Total de Animon":"Total Animon"}</div></div>
+    <div class="stat-card"><div class="stat-val">${regions.length}</div><div class="stat-lbl">${lang==="pt"?"Regiões":"Regions"}</div></div>
+    <div class="stat-card"><div class="stat-val">${types.length}</div><div class="stat-lbl">${lang==="pt"?"Tipos Únicos":"Unique Types"}</div></div>
+    <div class="stat-card"><div class="stat-val">${DATA.filter(a=>a.type2).length}</div><div class="stat-lbl">${lang==="pt"?"Dual Tipo":"Dual Type"}</div></div>
+    <div class="stat-card"><div class="stat-val">${withImg}</div><div class="stat-lbl">${lang==="pt"?"Com Imagem":"With Image"}</div><div class="stat-sub">${Math.round(withImg/total*100)}% do total</div></div>
+  `;
+
+  // Region bar
+  const regionCounts=countBy(DATA,a=>a.region);
+  const rKeys=Object.keys(regionCounts).sort((a,b)=>regionCounts[b]-regionCounts[a]);
+  destroyChart("chartRegion");
+  chartInstances["chartRegion"]=new Chart(document.getElementById("chartRegion"),{
+    type:"bar",
+    data:{labels:rKeys,datasets:[{
+      label:lang==="pt"?"Animon":"Animon",
+      data:rKeys.map(k=>regionCounts[k]),
+      backgroundColor:rKeys.map(k=>REGION_COLORS[k]||"#7c5cbf"),
+      borderRadius:6,borderSkipped:false
+    }]},
+    options:{...CHART_DEFAULTS,responsive:true,maintainAspectRatio:false,
+      plugins:{...CHART_DEFAULTS.plugins,legend:{display:false}}}
+  });
+
+  // Region donut
+  destroyChart("chartRegionDonut");
+  chartInstances["chartRegionDonut"]=new Chart(document.getElementById("chartRegionDonut"),{
+    type:"doughnut",
+    data:{labels:rKeys,datasets:[{
+      data:rKeys.map(k=>regionCounts[k]),
+      backgroundColor:rKeys.map(k=>REGION_COLORS[k]||"#7c5cbf"),
+      borderColor:"#13131f",borderWidth:2
+    }]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{position:"right",labels:{color:"#e8e8f0",font:{size:11},boxWidth:12}}}}
+  });
+
+  // Type1
+  const t1counts=countBy(DATA,a=>a.type1);
+  const t1keys=Object.keys(t1counts).sort((a,b)=>t1counts[b]-t1counts[a]);
+  destroyChart("chartType1");
+  chartInstances["chartType1"]=new Chart(document.getElementById("chartType1"),{
+    type:"bar",
+    data:{labels:t1keys.map(t=>tn(t)),datasets:[{
+      data:t1keys.map(k=>t1counts[k]),
+      backgroundColor:t1keys.map(k=>TYPE_COLORS[k]||"#7c5cbf"),
+      borderRadius:4,borderSkipped:false
+    }]},
+    options:{...CHART_DEFAULTS,indexAxis:"y",responsive:true,maintainAspectRatio:false,
+      plugins:{...CHART_DEFAULTS.plugins,legend:{display:false}}}
+  });
+
+  // Type2
+  const t2counts=countBy(DATA.filter(a=>a.type2),a=>a.type2);
+  const t2keys=Object.keys(t2counts).sort((a,b)=>t2counts[b]-t2counts[a]);
+  destroyChart("chartType2");
+  chartInstances["chartType2"]=new Chart(document.getElementById("chartType2"),{
+    type:"bar",
+    data:{labels:t2keys.map(t=>tn(t)),datasets:[{
+      data:t2keys.map(k=>t2counts[k]),
+      backgroundColor:t2keys.map(k=>TYPE_COLORS[k]||"#7c5cbf"),
+      borderRadius:4,borderSkipped:false
+    }]},
+    options:{...CHART_DEFAULTS,indexAxis:"y",responsive:true,maintainAspectRatio:false,
+      plugins:{...CHART_DEFAULTS.plugins,legend:{display:false}}}
+  });
+
+  // Type all (combined)
+  const tallCounts={};
+  DATA.forEach(a=>{
+    if(a.type1)tallCounts[a.type1]=(tallCounts[a.type1]||0)+1;
+    if(a.type2)tallCounts[a.type2]=(tallCounts[a.type2]||0)+1;
+  });
+  const tallKeys=Object.keys(tallCounts).sort((a,b)=>tallCounts[b]-tallCounts[a]);
+  destroyChart("chartTypeAll");
+  chartInstances["chartTypeAll"]=new Chart(document.getElementById("chartTypeAll"),{
+    type:"bar",
+    data:{labels:tallKeys.map(t=>tn(t)),datasets:[{
+      data:tallKeys.map(k=>tallCounts[k]),
+      backgroundColor:tallKeys.map(k=>TYPE_COLORS[k]||"#7c5cbf"),
+      borderRadius:4,borderSkipped:false
+    }]},
+    options:{...CHART_DEFAULTS,responsive:true,maintainAspectRatio:false,
+      plugins:{...CHART_DEFAULTS.plugins,legend:{display:false}}}
+  });
+
+  // Compare selects
+  const allRegions=[...new Set(DATA.map(a=>a.region))].sort();
+  const cmp1=document.getElementById("cmp1");
+  const cmp2=document.getElementById("cmp2");
+  if(!cmp1.options.length){
+    allRegions.forEach((r,i)=>{
+      cmp1.add(new Option(r,r));
+      cmp2.add(new Option(r,r));
+    });
+    cmp2.selectedIndex=1;
+  }
+  buildCompareChart();
+}
+
+function buildCompareChart(){
+  const r1=document.getElementById("cmp1").value;
+  const r2=document.getElementById("cmp2").value;
+  const metric=document.getElementById("cmp-metric").value;
+
+  function typesFor(region,which){
+    const m={};
+    DATA.filter(a=>a.region===region).forEach(a=>{
+      if(which==="type1"||which==="both") if(a.type1)m[a.type1]=(m[a.type1]||0)+1;
+      if(which==="type2"||which==="both") if(a.type2)m[a.type2]=(m[a.type2]||0)+1;
+    });
+    return m;
+  }
+
+  const d1=typesFor(r1,metric);
+  const d2=typesFor(r2,metric);
+  const allTypes=[...new Set([...Object.keys(d1),...Object.keys(d2)])].sort();
+
+  destroyChart("chartCompare");
+  chartInstances["chartCompare"]=new Chart(document.getElementById("chartCompare"),{
+    type:"bar",
+    data:{
+      labels:allTypes.map(t=>tn(t)),
+      datasets:[
+        {label:r1,data:allTypes.map(t=>d1[t]||0),backgroundColor:REGION_COLORS[r1]||"#7c5cbf",borderRadius:4},
+        {label:r2,data:allTypes.map(t=>d2[t]||0),backgroundColor:REGION_COLORS[r2]||"#a67de8",borderRadius:4}
+      ]
+    },
+    options:{...CHART_DEFAULTS,responsive:true,maintainAspectRatio:false,
+      plugins:{...CHART_DEFAULTS.plugins,legend:{display:true,labels:{color:"#e8e8f0"}}}}
+  });
+}
+
+document.getElementById("cmp1").addEventListener("change",buildCompareChart);
+document.getElementById("cmp2").addEventListener("change",buildCompareChart);
+document.getElementById("cmp-metric").addEventListener("change",buildCompareChart);
+
+// DEX
 function buildRegionNav(){
-  const rlist = lang==="pt"?REGIONS_PT:REGIONS_EN;
-  document.getElementById("rnav").innerHTML = REGION_KEYS.map((k,i)=>`
+  const rlist=lang==="pt"?REGIONS_PT:REGIONS_EN;
+  document.getElementById("rnav").innerHTML=REGION_KEYS.map((k,i)=>`
     <button class="rbtn${region===k?" active":""}" onclick="setRegion('${k}')">
       ${k==="all"?'<span class="rflag-custom">🌐</span>':REGION_FLAG[k]||''}
       ${rlist[i]}
@@ -239,52 +521,49 @@ function buildTypeFilter(){
   const lbl=lang==="pt"?"Tipo:":"Type:";
   const allLbl=lang==="pt"?"Todos":"All";
   document.getElementById("fbar").innerHTML=`<span class="flbl">${lbl}</span>`+
-    unique.map(t=>`<button class="tbtn${typeF===t?" active":""}" onclick="setType('${t}',this)">${t==="all"?allLbl:tn(t)}</button>`).join("");
+    unique.map(t=>`<button class="tbtn${typeF===t?" active":""}" onclick="setType('${t}')">${t==="all"?allLbl:tn(t)}</button>`).join("");
 }
 
 function filtered(){
   return DATA.filter(a=>{
-    if(region!=="all" && a.region!==region) return false;
-    if(typeF!=="all" && a.type1!==typeF && a.type2!==typeF) return false;
-    if(query && !a.name.toLowerCase().includes(query.toLowerCase())) return false;
+    if(region!=="all"&&a.region!==region)return false;
+    if(typeF!=="all"&&a.type1!==typeF&&a.type2!==typeF)return false;
+    if(query&&!a.name.toLowerCase().includes(query.toLowerCase()))return false;
     return true;
   });
 }
 
 function localImg(a){
-  const folder = REGION_FOLDER[a.region] || a.region;
-  const seq = a.img_seq || a.regional;
-  const num = String(seq).padStart(3,'0');
-  return 'images/' + folder + '/' + num;
+  const folder=REGION_FOLDER[a.region]||a.region;
+  const seq=a.img_seq||a.regional;
+  const num=String(seq).padStart(3,"0");
+  return "images/"+folder+"/"+num;
 }
 
 function cardImg(a){
-  const base = localImg(a);
+  const base=localImg(a);
   return '<img src="'+base+'.png" alt="'+a.name+'" loading="lazy" '+
-    'data-jpg="'+base+'.jpg" data-da="'+(a.image_url||'')+'" data-emoji="'+a.emoji+'" '+
+    'data-jpg="'+base+'.jpg" data-da="'+(a.image_url||"")+'" data-emoji="'+a.emoji+'" '+
     'onerror="imgFallback(this)">';
 }
 
 function imgFallback(el){
-  const jpg = el.getAttribute('data-jpg');
-  const da  = el.getAttribute('data-da');
-  const emo = el.getAttribute('data-emoji');
-  if(el.src.endsWith('.png') && jpg){ el.src=jpg; return; }
-  if(!el.src.includes('deviantart') && da){ el.src=da; return; }
-  el.parentElement.innerHTML = emo;
+  const jpg=el.getAttribute("data-jpg");
+  const da=el.getAttribute("data-da");
+  const emo=el.getAttribute("data-emoji");
+  if(el.src.endsWith(".png")&&jpg){el.src=jpg;return;}
+  if(!el.src.includes("deviantart")&&da){el.src=da;return;}
+  el.parentElement.innerHTML=emo;
 }
 
 function buildPagination(total){
-  const pages = Math.ceil(total / PAGE_SIZE);
-  if(pages <= 1){ document.getElementById("pagination").innerHTML=""; return; }
-  let html = `<button class="pgbtn" onclick="goPage(${currentPage-1})" ${currentPage===1?"disabled":""}>‹</button>`;
-  const range = 2;
+  const pages=Math.ceil(total/PAGE_SIZE);
+  if(pages<=1){document.getElementById("pagination").innerHTML="";return;}
+  let html=`<button class="pgbtn" onclick="goPage(${currentPage-1})" ${currentPage===1?"disabled":""}>‹</button>`;
   for(let p=1;p<=pages;p++){
-    if(p===1||p===pages||Math.abs(p-currentPage)<=range){
+    if(p===1||p===pages||Math.abs(p-currentPage)<=2)
       html+=`<button class="pgbtn${p===currentPage?" active":""}" onclick="goPage(${p})">${p}</button>`;
-    } else if(Math.abs(p-currentPage)===range+1){
-      html+=`<span class="pginfo">…</span>`;
-    }
+    else if(Math.abs(p-currentPage)===3)html+=`<span class="pginfo">…</span>`;
   }
   html+=`<button class="pgbtn" onclick="goPage(${currentPage+1})" ${currentPage===pages?"disabled":""}>›</button>`;
   html+=`<span class="pginfo">${currentPage}/${pages}</span>`;
@@ -292,22 +571,18 @@ function buildPagination(total){
 }
 
 function goPage(p){
-  const total=filtered().length;
-  const pages=Math.ceil(total/PAGE_SIZE);
+  const pages=Math.ceil(filtered().length/PAGE_SIZE);
   if(p<1||p>pages)return;
-  currentPage=p;
-  render();
-  window.scrollTo({top:0,behavior:'smooth'});
+  currentPage=p;render();
+  window.scrollTo({top:0,behavior:"smooth"});
 }
 
 function render(){
   const list=filtered();
   const total=list.length;
   const pages=Math.ceil(total/PAGE_SIZE);
-  if(currentPage>pages) currentPage=1;
-  const start=(currentPage-1)*PAGE_SIZE;
-  const page=list.slice(start,start+PAGE_SIZE);
-
+  if(currentPage>pages)currentPage=1;
+  const page=list.slice((currentPage-1)*PAGE_SIZE,currentPage*PAGE_SIZE);
   document.getElementById("dcnt").textContent=`${total} animon`;
   document.getElementById("grid").innerHTML=page.map(a=>`
     <div class="card" onclick="openModal(${a.mr})">
@@ -320,26 +595,26 @@ function render(){
 }
 
 function openModal(mr){
-  const a=DATA.find(x=>x.mr===mr); if(!a)return;
+  const a=DATA.find(x=>x.mr===mr);if(!a)return;
   document.getElementById("mnums").innerHTML=
     `<b>#${String(a.mr).padStart(3,"0")}</b> MetanikRegions<br><b>#${String(a.regional).padStart(3,"0")}</b> ${a.region}`;
   const imgEl=document.getElementById("mimg");
   const base=localImg(a);
   imgEl.innerHTML='<img src="'+base+'.png" alt="'+a.name+'" '+
-    'data-jpg="'+base+'.jpg" data-da="'+(a.image_url||'')+'" data-emoji="'+a.emoji+'" '+
+    'data-jpg="'+base+'.jpg" data-da="'+(a.image_url||"")+'" data-emoji="'+a.emoji+'" '+
     'onerror="imgFallback(this)">';
   document.getElementById("mname").textContent=a.name;
   document.getElementById("mtypes").innerHTML=tb(a.type1)+(a.type2?tb(a.type2):"");
   document.getElementById("mspec").textContent=a.species||(lang==="pt"?"N/D":"N/A");
-  const daEl=document.getElementById("mda");
-  daEl.innerHTML=a.deviantart_url?`<a class="mda-link" href="${a.deviantart_url}" target="_blank">Ver no DeviantArt ↗</a>`:"";
+  document.getElementById("mda").innerHTML=a.deviantart_url?
+    `<a class="mda-link" href="${a.deviantart_url}" target="_blank">Ver no DeviantArt ↗</a>`:"";
   document.getElementById("s_desc").textContent=lang==="pt"?"Descrição":"Description";
   document.getElementById("s_abil").textContent=lang==="pt"?"Habilidades":"Abilities";
   document.getElementById("s_info").textContent=lang==="pt"?"Informações":"Information";
   document.getElementById("s_insp").textContent=lang==="pt"?"Inspiração":"Inspiration";
   const descText=lang==="pt"?a.description_pt:a.description_en;
-  const nd=lang==="pt"?"N/D":"N/A";
-  document.getElementById("mdesc").innerHTML=descText?`<p class="lore">${descText}</p>`:`<p class="nd">${nd}</p>`;
+  document.getElementById("mdesc").innerHTML=descText?
+    `<p class="lore">${descText}</p>`:`<p class="nd">${lang==="pt"?"N/D":"N/A"}</p>`;
   const noHa=lang==="pt"?"Não possui":"Does not have";
   document.getElementById("mabil").innerHTML=`
     <div class="irow"><div><div class="ikey">${lang==="pt"?"Habilidade":"Ability"}</div><div class="ival">${a.ability1||"—"}</div></div><span class="atag">1</span></div>
@@ -354,9 +629,7 @@ function openModal(mr){
   if(a.inspiration){
     document.getElementById("minsp").innerHTML=`<div class="insp"><b>${a.inspiration}</b></div>`;
     document.getElementById("sec_insp").style.display="";
-  } else {
-    document.getElementById("sec_insp").style.display="none";
-  }
+  }else{document.getElementById("sec_insp").style.display="none";}
   document.getElementById("ov").classList.add("open");
 }
 
@@ -364,24 +637,30 @@ function closeModal(){document.getElementById("ov").classList.remove("open");}
 function closeOv(e){if(e.target===document.getElementById("ov"))closeModal();}
 function setRegion(r){region=r;currentPage=1;buildRegionNav();render();}
 function setType(t){typeF=t;currentPage=1;buildTypeFilter();render();}
-function doSearch(q){query=q;currentPage=1;render();}
+function doSearch(q){
+  query=q;currentPage=1;
+  if(q&&document.getElementById("screen-dex").classList.contains("active")===false)
+    showScreen("dex");
+  render();
+}
 function setLang(l,btn){
   lang=l;
   document.querySelectorAll(".lbtn").forEach(b=>b.classList.remove("active"));
   btn.classList.add("active");
-  buildRegionNav();buildTypeFilter();render();
+  buildRegionNav();buildTypeFilter();
+  if(document.getElementById("screen-dashboard").classList.contains("active"))buildDashboard();
+  else render();
 }
 
-fetch('data/animons.json')
+fetch("data/animons.json")
   .then(r=>r.json())
   .then(data=>{
     DATA=data;
-    buildRegionNav();buildTypeFilter();render();
+    buildDashboard();
   })
   .catch(err=>{
-    document.getElementById("grid").innerHTML=`<div class="loading">Erro ao carregar: ${err.message}</div>`;
+    document.getElementById("grid").innerHTML=`<div class="loading">Erro: ${err.message}</div>`;
   });
 </script>
 </body>
 </html>
-
