@@ -168,10 +168,10 @@ nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 28
       <div id="mda"></div>
     </div>
     <div class="mright">
-      <div class="sec"><div class="stitle" id="s_desc">Descrição</div><div id="mdesc"></div></div>
       <div class="sec"><div class="stitle" id="s_abil">Habilidades</div><div id="mabil"></div></div>
       <div class="sec"><div class="stitle" id="s_info">Informações</div><div class="igrid" id="minfo"></div></div>
       <div class="sec" id="sec_insp"><div class="stitle" id="s_insp">Inspiração</div><div id="minsp"></div></div>
+      <div class="sec"><div class="stitle" id="s_desc">Descrição</div><div id="mdesc"></div></div>
     </div>
   </div>
 </div>
@@ -338,7 +338,7 @@ function openModal(mr){
   document.getElementById("s_info").textContent=lang==="pt"?"Informações":"Information";
   document.getElementById("s_insp").textContent=lang==="pt"?"Inspiração":"Inspiration";
   const descText=lang==="pt"?a.description_pt:a.description_en;
-  const nd=lang==="pt"?"N/D — disponível no DeviantArt":"N/A — available on DeviantArt";
+  const nd=lang==="pt"?"N/D":"N/A";
   document.getElementById("mdesc").innerHTML=descText?`<p class="lore">${descText}</p>`:`<p class="nd">${nd}</p>`;
   const noHa=lang==="pt"?"Não possui":"Does not have";
   document.getElementById("mabil").innerHTML=`
