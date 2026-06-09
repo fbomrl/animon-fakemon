@@ -365,7 +365,6 @@ function buildDashboard(){
   const total=DATA.length;
   const regions=[...new Set(DATA.map(a=>a.region))];
   const types=[...new Set(DATA.flatMap(a=>[a.type1,a.type2]).filter(Boolean))];
-  const withImg=DATA.filter(a=>a.img_seq).length;
 
   // Stats cards
   document.getElementById("dash-stats").innerHTML=`
@@ -373,7 +372,6 @@ function buildDashboard(){
     <div class="stat-card"><div class="stat-val">${regions.length}</div><div class="stat-lbl">${lang==="pt"?"Regiões":"Regions"}</div></div>
     <div class="stat-card"><div class="stat-val">${types.length}</div><div class="stat-lbl">${lang==="pt"?"Tipos Únicos":"Unique Types"}</div></div>
     <div class="stat-card"><div class="stat-val">${DATA.filter(a=>a.type2).length}</div><div class="stat-lbl">${lang==="pt"?"Dual Tipo":"Dual Type"}</div></div>
-    <div class="stat-card"><div class="stat-val">${withImg}</div><div class="stat-lbl">${lang==="pt"?"Com Imagem":"With Image"}</div><div class="stat-sub">${Math.round(withImg/total*100)}% do total</div></div>
   `;
 
   // Region bar
@@ -552,8 +550,15 @@ function imgFallback(el){
   const jpg=el.getAttribute("data-jpg");
   const da=el.getAttribute("data-da");
   const emo=el.getAttribute("data-emoji");
-  if(el.src.endsWith(".png")&&jpg){el.src=jpg;return;}
-  if(!el.src.includes("deviantart")&&da){el.src=da;return;}
+  const tried=el.getAttribute("data-tried")||"";
+  if(!tried.includes("jpg")){
+    el.setAttribute("data-tried",tried+"jpg");
+    el.src=jpg;return;
+  }
+  if(da&&!tried.includes("da")){
+    el.setAttribute("data-tried",tried+"da");
+    el.src=da;return;
+  }
   el.parentElement.innerHTML=emo;
 }
 
