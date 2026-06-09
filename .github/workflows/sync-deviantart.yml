@@ -1,9 +1,7 @@
 name: Sync Animon Data
 
 on:
-  schedule:
-    - cron: '0 3 * * *'   # Todo dia às 03:00 UTC
-  workflow_dispatch:        # Permite rodar manualmente
+  workflow_dispatch: # Somente manual — nunca automático
 
 jobs:
   sync:
@@ -19,13 +17,15 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: |
-          pip install openpyxl
+        run: pip install openpyxl
 
       - name: Run sync script
         run: |
           cd scripts
           python3 sync_deviantart.py
+
+      - name: Run img_seq script
+        run: python3 add_img_seq.py
 
       - name: Commit and push if changed
         run: |
